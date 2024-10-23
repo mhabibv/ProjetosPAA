@@ -73,7 +73,7 @@ class MergeSortK {
 
                 indices[i] = ini + i * tamParticao;
 
-                // Limita o último índice para não ultrapassar r
+                // Limita o último índice para não ultrapassar o valor de fim
                 if (i == k - 1) {
 
                     indices[i + 1] = fim + 1;

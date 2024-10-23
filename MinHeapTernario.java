@@ -2,152 +2,72 @@ import java.util.Arrays;
 
 public class MinHeapTernario {
 
-    private int[] heap;
-    private int tamanho;
-    private int capacidade;
-
-    // Construtor que inicializa a capacidade e o heap
-    public MinHeapTernario(int capacidade) {
-
-        this.capacidade = capacidade;
-        this.tamanho = 0;
-        this.heap = new int[capacidade];
-
+    public static void heapSort(int[] v) {
+        buildMinHeap(v);
+        int n = v.length;
+        for (int i = n - 1; i > 0; i--) {
+            // Troca o menor elemento no topo com o último
+            swap(v, 0, i);
+            // Ajusta a heap com tamanho reduzido
+            sift(v, 0, i - 1);
+        }
     }
 
-    // retorna o índice do pai de um nó
-    private int pai(int i) {
-
-        return (i - 1) / 3;
-
+    // Constrói o Min-Heap para um array ternário
+    private static void buildMinHeap(int[] v) {
+        int n = v.length;
+        for (int i = n / 3; i >= 0; i--) {
+            sift(v, i, n - 1);
+        }
     }
 
-    // retorna o índice do filho
-    private int filho(int i, int numFilho) {
+    // Função para ajustar a heap de 3 filhos
+    private static void sift(int[] v, int i, int n) {
+        int esq = 3 * i + 1;   // Calcula o índice do primeiro filho
+        int meio = 3 * i + 2;  // Calcula o índice do segundo filho
+        int dir = 3 * i + 3;   // Calcula o índice do terceiro filho
+        int menor = i;         // Supõe que o menor é o nó atual
 
-        return 3 * i + numFilho;
-
-    }
-
-    // Função para inserir um novo elemento no heap
-    public void inserir(int valor) {
-
-        if (tamanho == capacidade) {    // Verifica se o heap está cheio
-            System.out.println("O heap está cheio");
-            return;
+        // Compara com o primeiro filho
+        if (esq <= n && v[esq] < v[menor]) {
+            menor = esq;
         }
 
-        heap[tamanho] = valor;  // novo valor é colocado na última posição do heap
-        tamanho++;  // tamanho incrementado.
-        heapificarParaCima(tamanho - 1);   // para restaurar a propriedade do Min-Heap.
-
-    }
-
-    // Função para garantir que o heap mantenha a propriedade de Min-Heap ao subir
-    private void heapificarParaCima(int i) {
-
-        int indiceAtual = i;
-
-        while (indiceAtual > 0 && heap[indiceAtual] < heap[pai(indiceAtual)]) {     // garante que não saia do limite do vetor
-
-            trocar(indiceAtual, pai(indiceAtual));  // Se o valor do nó atual for menor que o do pai, eles são trocados
-            indiceAtual = pai(indiceAtual);     // índice é atualizado para o índice do pai para continuar o processo até que a propriedade do heap seja restaurada
-
+        // Compara com o segundo filho
+        if (meio <= n && v[meio] < v[menor]) {
+            menor = meio;
         }
 
-    }
-
-    // Função para remover e retornar o menor elemento (a raiz) do heap
-    public int extrairMinimo() {
-
-        if (tamanho == 0) {
-
-            System.out.println("O heap está vazio, não é possível extrair o mínimo.");
-            return Integer.MIN_VALUE; // Retorna um valor padrão minimo
-
-        }
-    
-        int minimo = heap[0]; // O menor elemento é a raiz
-        heap[0] = heap[tamanho - 1]; // Substitui a raiz pelo último elemento
-        tamanho--; // Reduz o tamanho do heap
-        heapificarParaBaixo(0); // Ajusta a estrutura do heap
-    
-        return minimo; // Retorna o menor elemento extraído
-
-    }
-    
-
-    // Função para garantir que o heap mantenha a propriedade de Min-Heap ao descer
-    private void heapificarParaBaixo(int i) {
-
-        int menor = i;  // O índice do nó atual é armazenado como o menor.
-
-        for (int j = 1; j <= 3; j++) {  // pra cada filho (1 a 3), verifica se existe e se é menor que o atual
-
-            int indiceFilho = filho(i, j);  
-
-            if (indiceFilho < tamanho && heap[indiceFilho] < heap[menor]) {
-
-                menor = indiceFilho;
-
-            }
+        // Compara com o terceiro filho
+        if (dir <= n && v[dir] < v[menor]) {
+            menor = dir;
         }
 
-        // Se um filho menor for encontrado, troca com o nó atual e chama heapificarParaBaixo recursivamente.
+        // Se o menor não é o nó atual, faça a troca e continue ajustando a heap
         if (menor != i) {
-
-            trocar(i, menor);
-            heapificarParaBaixo(menor);
-
+            swap(v, i, menor);
+            sift(v, menor, n);
         }
-
     }
 
-    // troca dois elementos
-    private void trocar(int i, int j) {
-
-        int temp = heap[i];
-        heap[i] = heap[j];
-        heap[j] = temp;
-
-    }
-
-    // Função para ordenar o vetor usando Heap Sort
-    public int[] ordenar() {
-
-        int[] ordenado = new int[tamanho];  // armazena os elementos ordenados.
-        int tamanhoOriginal = tamanho;  // garante que o tamanho original seja armazenado e nao sofra as mudancas durantes possiveis iterações
-
-        // Extrair o mínimo repetidamente até que o heap esteja vazio
-        for (int i = 0; i < tamanhoOriginal; i++) {
-
-            ordenado[i] = extrairMinimo();
-
-        }
-
-        return ordenado;    // Retorna o vetor ordenado
-
+    // Função para trocar dois elementos no array
+    private static void swap(int[] v, int i, int j) {
+        int temp = v[i];
+        v[i] = v[j];
+        v[j] = temp;
     }
 
     public static void main(String[] args) {
-        MinHeapTernario minHeap = new MinHeapTernario(10);
+        // Exemplo de array para ordenação
+    
+        int[] v = {12, 3, 18, 24, 5, 1, 7, 16, 9};
 
-        minHeap.inserir(10);
-        minHeap.inserir(9);
-        minHeap.inserir(3);
-        minHeap.inserir(18);
-        minHeap.inserir(4);
-        minHeap.inserir(1);
-        minHeap.inserir(13);
-        minHeap.inserir(29);
-        minHeap.inserir(32);
+        System.out.println("Array original: " + Arrays.toString(v));
 
-        System.out.println("Heap apos as inserçoes:");
-        System.out.println(Arrays.toString(Arrays.copyOfRange(minHeap.heap, 0, minHeap.tamanho)));
+        // Ordena o array com Heap Sort ternário
+        heapSort(v);
 
-        // Ordenar o vetor
-        int[] vetorOrdenado = minHeap.ordenar();
-        System.out.println("Vetor ordenado:");
-        System.out.println(Arrays.toString(vetorOrdenado));
+        // Exibe o array ordenado
+        System.out.println("Array ordenado: " + Arrays.toString(v));
     }
 }

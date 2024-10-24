@@ -65,7 +65,7 @@ class MergeSortK {
 
         if (ini < fim) {       // verifica se há pelo menos dois elementos para ordenar. Se ini não for menor que fim, não há nada a fazer (o array já está ordenado ou é vazio).
 
-            int tamParticao = (fim - ini + 1 + k - 1) / k; // calcula o tamanho da partição (arredondamento para cima)
+            int tamParticao = (int) Math.ceil((double) (fim - ini + 1) / k);  // calcula o tamanho da partição (arredondamento para cima)
             int[] indices = new int[k + 1];     // armazenar os índices que delimitam cada subarray e um índice extra para o final
 
             // Calcula os índices de cada subarray

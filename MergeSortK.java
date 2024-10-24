@@ -73,7 +73,7 @@ class MergeSortK {
 
                 indices[i] = ini + i * tamParticao;
 
-                // Limita o último índice para não ultrapassar o valor de fim
+                // Limita o último índice para não ultrapassar r
                 if (i == k - 1) {
 
                     indices[i + 1] = fim + 1;
@@ -118,11 +118,17 @@ class MergeSortK {
     // Main
     public static void main(String args[]) {
 
-        int vet[] = { 12, 5, 7, 23, 1, 99, 45 };    // vetor a ser ordenado
+        int vet[] = { 39, 43, 27, 18, 45 };    // vetor a ser ordenado
         int k = 3; // quantas partes dividir
+	
+    	if(k == 0){
+    		System.out.println("Forneca um valor de k maior que 0!");
+    		return;
+    	}
 
         System.out.println("Vetor desordenado:");
         printVet(vet);
+	
 
         // Chamada do Merge Sort
         MergeSortK ob = new MergeSortK();

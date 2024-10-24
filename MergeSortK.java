@@ -65,7 +65,7 @@ class MergeSortK {
 
         if (ini < fim) {       // verifica se há pelo menos dois elementos para ordenar. Se ini não for menor que fim, não há nada a fazer (o array já está ordenado ou é vazio).
 
-            int tamParticao = (int) Math.ceil((double) (fim - ini + 1) / k);  // calcula o tamanho da partição (arredondamento para cima)
+            int tamParticao = (int) Math.ceil((double) (fim - ini + 1) / k); // calcula o tamanho da partição (arredondamento para cima)
             int[] indices = new int[k + 1];     // armazenar os índices que delimitam cada subarray e um índice extra para o final
 
             // Calcula os índices de cada subarray
@@ -73,7 +73,7 @@ class MergeSortK {
 
                 indices[i] = ini + i * tamParticao;
 
-                // Limita o último índice para não ultrapassar r
+                // Limita o último índice para não ultrapassar o fim
                 if (i == k - 1) {
 
                     indices[i + 1] = fim + 1;
@@ -97,7 +97,7 @@ class MergeSortK {
 
             }
 
-            // Mescla as partições ordenadas
+            // Mescla as partições
             merge(vet, indices, ini, fim);
 
         }
@@ -118,8 +118,8 @@ class MergeSortK {
     // Main
     public static void main(String args[]) {
 
-        int vet[] = { 39, 43, 27, 18, 45 };    // vetor a ser ordenado
-        int k = 3; // quantas partes dividir
+        int vet[] = { 39, -1, -5, 18, 45, 0, 102, 47, 402, 507, 22, 14, 11, 1, -9, -15, 237, 1001, 415};    // vetor a ser ordenado
+        int k = 10; // quantas partes dividir
 	
     	if(k == 0){
     		System.out.println("Forneca um valor de k maior que 0!");
@@ -129,13 +129,17 @@ class MergeSortK {
         System.out.println("Vetor desordenado:");
         printVet(vet);
 	
+        long inicio = System.nanoTime();
 
-        // Chamada do Merge Sort
-        MergeSortK ob = new MergeSortK();
-        ob.sort(vet, 0, vet.length - 1, k);
+        MergeSortK chamada = new MergeSortK();
+        chamada.sort(vet, 0, vet.length - 1, k);
+
+        long fim = System.nanoTime();
 
         System.out.println("\nVetor ordenado:");
         printVet(vet);
+
+        System.out.println("\nTempo de execucao: " + (fim - inicio) + " ns");
 
     }
 
